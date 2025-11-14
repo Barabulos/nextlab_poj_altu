@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Adună două numere</title>
+<style>
+:root {
+    --bg1: #0f0f1f;
+    --bg2: #1e1e38;
+    --accent: #ffce3d;
+    --accent2: #ff6f3d;
+    --glass: rgba(255,255,255,0.08);
+    --radius: 18px;
+    --blur: 18px;
+    --font-stack: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: var(--font-stack);
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 20% 20%, #2f2f52 0%, transparent 60%),
+        radial-gradient(circle at 80% 70%, #462f52 0%, transparent 65%),
+        linear-gradient(135deg,var(--bg1),var(--bg2));
+    color: #f5f6fa;
+    overflow-x: hidden;
+}
+h1 {
+    font-size: clamp(1.9rem,5vw,3.4rem);
+    line-height: 1.1;
+    background: linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    letter-spacing: 2px;
+    margin: 0 0 1.2rem;
+    position: relative;
+}
+h1::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -8px;
+    width: 80px; height: 4px;
+    background: linear-gradient(90deg,var(--accent),var(--accent2));
+    border-radius: 2px;
+    animation: bar 3.5s ease-in-out infinite;
+}
+@keyframes bar {
+    0%,100% { transform: translateX(0); width: 80px; }
+    50% { transform: translateX(140px); width: 120px; }
+}
+.container {
+    width: min(94vw,560px);
+    background: var(--glass);
+    backdrop-filter: blur(var(--blur)) saturate(130%);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: var(--radius);
+    padding: clamp(1.4rem,4vw,2.6rem);
+    position: relative;
+    box-shadow:
+        0 10px 30px -8px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(255,255,255,0.06),
+        inset 0 0 24px -6px rgba(255,255,255,0.15);
+    overflow: hidden;
+}
+.container::before,
+.container::after {
+    content: "";
+    position: absolute;
+    width: 420px; height: 420px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    opacity: 0.08;
+    filter: blur(60px);
+    animation: swirl 18s linear infinite;
+    pointer-events: none;
+}
+.container::before { top: -240px; left: -240px; animation-direction: reverse; }
+.container::after { bottom: -240px; right: -240px; }
+@keyframes swirl {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.15); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+form {
+    display: grid;
+    gap: 1.1rem;
+}
+label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    color: #cfd2e2;
+    font-weight: 600;
+}
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+input[type=number] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.25);
+    background:
+        linear-gradient(145deg,rgba(255,255,255,0.12),rgba(255,255,255,0.04));
+    border-radius: 14px;
+    outline: none;
+    color: #fff;
+    transition: border-color .25s, box-shadow .25s, transform .25s;
+}
+input[type=number]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255,206,61,0.25), 0 6px 22px -8px rgba(0,0,0,0.6);
+    transform: translateY(-2px);
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { opacity: 0.5; }
+.actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: .4rem;
+}
+button {
+    position: relative;
+    cursor: pointer;
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: .8px;
+    padding: 0.95rem 1.2rem;
+    border-radius: 16px;
+    background: linear-gradient(90deg,var(--accent) 0%,var(--accent2) 100%);
+    color: #181818;
+    border: none;
+    box-shadow:
+        0 8px 20px -6px rgba(255,110,61,0.55),
+        0 2px 4px -1px rgba(0,0,0,0.5);
+    transition: transform .35s cubic-bezier(.16,.8,.3,1),
+                            box-shadow .35s,
+                            filter .35s;
+}
+button:hover {
+    transform: translateY(-5px);
+    box-shadow:
+        0 12px 38px -10px rgba(255,110,61,0.65),
+        0 4px 10px -2px rgba(0,0,0,0.55);
+    filter: brightness(1.05) contrast(1.1);
+}
+button:active {
+    transform: translateY(0);
+    box-shadow:
+        0 6px 16px -4px rgba(255,110,61,0.6),
+        0 2px 6px -2px rgba(0,0,0,0.5);
+}
+#result {
+    margin: 1.2rem 0 0;
+    font-size: clamp(1.15rem,2.6vw,1.55rem);
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.55));
+    animation: pulse 4s ease-in-out infinite;
+    user-select: none;
+}
+@keyframes pulse {
+    0%,100% { opacity: .85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.03); }
+}
+footer {
+    margin-top: 2.4rem;
+    font-size: .65rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: .35;
+    text-align: center;
+}
+@media (max-width: 560px) {
+    .actions { flex-direction: column; }
+    button { width: 100%; }
+}
+</style>
+<script>
+function calculateSum() {
+    const n1 = parseFloat(document.getElementById('num1').value) || 0;
+    const n2 = parseFloat(document.getElementById('num2').value) || 0;
+    const sum = n1 + n2;
+    const result = document.getElementById('result');
+    result.textContent = 'Suma: ' + sum;
+    result.style.animation = 'none';
+    void result.offsetWidth;
+    result.style.animation = '';
+}
+</script>
+</head>
+<body>
+    <div class="container" role="application">
+        <h1>Adună două numere</h1>
+        <form onsubmit="calculateSum();return false;" aria-label="Calculator de adunare">
+            <div class="field">
+                <label for="num1">Număr 1</label>
+                <input id="num1" type="number" inputmode="decimal" placeholder="Introdu primul număr" oninput="calculateSum()" />
+            </div>
+            <div class="field">
+                <label for="num2">Număr 2</label>
+                <input id="num2" type="number" inputmode="decimal" placeholder="Introdu al doilea număr" oninput="calculateSum()" />
+            </div>
+            <div class="actions">
+                <button type="button" onclick="calculateSum()" aria-label="Calculează suma">Calculează</button>
+                <button type="reset" onclick="setTimeout(()=>calculateSum(),50)" aria-label="Resetează valorile">Resetează</button>
+            </div>
+        </form>
+        <p id="result" aria-live="polite">Suma: 0</p>
+        <footer>Interfață demonstrativă</footer>
+    </div>
+</body>
+</html>
